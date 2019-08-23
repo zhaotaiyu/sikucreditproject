@@ -7,6 +7,7 @@
 import psycopg2
 import datetime
 import pymongo
+from scrapy.conf import settings
 
 mongoclient=settings.get("MONGOCLIENT")
 mongodatabase=settings.get("MONGODATABASE")

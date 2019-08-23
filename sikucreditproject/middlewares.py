@@ -6,7 +6,12 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
-import random
+import random,datetime,pymongo
+from scrapy.conf import settings
+
+mongoclient=settings.get("MONGOCLIENT")
+mongodatabase=settings.get("MONGODATABASE")
+mongotable=settings.get("MONGOTABLE")
 
 class MyUseragent():
     def process_request(self,request,spider):
@@ -25,3 +30,12 @@ class MyUseragent():
             ]
         agent = random.choice(USER_AGENT_LIST)
         request.headers['User_Agent'] =agent
+    def process_exception(self,request,exception,spider):
+        myclient = pymongo.MongoClient('mongodb://ecs-a025-0002:27017/')
+        mydb = myclient[mongodatabase]
+        mycol = mydb[mongotable]
+        mydict = {"exception": "error",
+                  "url": request.url,
+                  'time': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+        mycol.insert_one(mydict)
+        myclient.close()
