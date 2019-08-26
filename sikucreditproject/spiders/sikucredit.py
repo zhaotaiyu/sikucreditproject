@@ -12,6 +12,11 @@ class SikucreditSpider(scrapy.Spider):
 	def start_requests(self):
 		self.num = getnum()
 		print(self.num)
+		# cookies = {
+		# 	'Hm_lvt_b1b4b9ea61b6f1627192160766a9c55c':'1566788653',
+		# 	'JSESSIONID':'E1263431D91204C5E5916A08514856',
+		# 	 'Hm_lpvt_b1b4b9ea61b6f1627192160766a9c55c':'1566802571'
+		# }
 		chengxin_url = 'http://jzsc.mohurd.gov.cn/asite/credit/record/query'
 		for page in range (1,15):
 			chengxin_formdata = {
