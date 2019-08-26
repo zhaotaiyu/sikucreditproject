@@ -58,9 +58,9 @@ class SikucreditSpider(scrapy.Spider):
 				#文号
 				credit["refer_num"] = str(tr.xpath("./td[4]/div/text()").extract_first()).strip()
 				#决定日期
-				credit["publish_date"] = str(tr.xpath("./td[3]/div/span[2]/text()").extract_first()).strip().split("：")[-1]
+				credit["in_date"] = str(tr.xpath("./td[3]/div/span[2]/text()").extract_first()).strip().split("：")[-1]
 				#发布有效期
-				credit["useful_date"] = str(tr.xpath("./td[5]/text()").extract_first()).strip()
+				credit["out_date"] = str(tr.xpath("./td[5]/text()").extract_first()).strip()
 				#原因
 				credit["reason"] = str(tr.xpath("./td[1]/div/div/a/text()").extract_first()).strip()
 				#主体类型
@@ -129,7 +129,7 @@ class SikucreditSpider(scrapy.Spider):
 				# 认定部门
 				credit["department"] = str(tr.xpath("./td[5]/text()").extract_first()).strip()
 				# 列入日期
-				credit["publish_date"] = str(tr.xpath("./td[6]/text()").extract_first()).strip().split("：")[-1]
+				credit["in_date"] = str(tr.xpath("./td[6]/text()").extract_first()).strip().split("：")[-1]
 				#原因
 				credit["reason"] = str(tr.xpath("./td[1]/div/div/a/text()").extract_first()).strip()
 				#主体类型
