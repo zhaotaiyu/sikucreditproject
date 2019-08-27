@@ -8,6 +8,7 @@
 from scrapy import signals
 import random,datetime,pymongo
 from scrapy.conf import settings
+import base64
 
 mongoclient=settings.get("MONGOCLIENT")
 mongodatabase=settings.get("MONGODATABASE")
@@ -39,3 +40,20 @@ class MyUseragent():
                   'time': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
         mycol.insert_one(mydict)
         myclient.close()
+class AbuyunProxyMiddleware():
+    def __init__(self,proxyuser,proxypass,proxyserver):
+        self.proxyuser = proxyuser
+        self.proxypass = proxypass
+        self.proxyserver = proxyserver
+        self.proxyauth = "Basic " + base64.urlsafe_b64encode(bytes((self.proxyuser + ":" + self.proxypass), "ascii")).decode("utf8")
+    def process_request(self,request,spider):
+        request.meta["proxy"] = self.proxyserver
+        request.headers["Proxy-Authorization"] = self.proxyauth
+        print("正在使用代理："+str(self.proxyserver))
+    @classmethod
+    def from_crawler(cls,crawler):
+        return cls(
+            proxyuser=crawler.settings.get("PROXYUSER"),
+            proxypass=crawler.settings.get("PROXYPASS"),
+            proxyserver=crawler.settings.get("PROXYSERVER"),
+        )

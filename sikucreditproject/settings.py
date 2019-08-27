@@ -56,6 +56,8 @@ DEFAULT_REQUEST_HEADERS = {
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
    'sikucreditproject.middlewares.MyUseragent': 543,
+   # 'sikucreditproject.middlewares.AbuyunProxyMiddleware': 544,
+
 }
 
 # Enable or disable extensions
@@ -101,3 +103,7 @@ PGSQL_PORT=54321
 MONGOCLIENT='mongodb://ecs-a025-0002:27017/'
 MONGODATABASE='sikuyilog'
 MONGOTABLE='sikucredit'
+#abuyun代理配置
+PROXYUSER="H7895G9300YN511D"
+PROXYPASS="AC67F9AA92D6F49F"
+PROXYSERVER="http://http-dyn.abuyun.com:9020"
