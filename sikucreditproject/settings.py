@@ -27,7 +27,7 @@ NEWSPIDER_MODULE = 'sikucreditproject.spiders'
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 2
+DOWNLOAD_DELAY = 1
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -56,7 +56,7 @@ DEFAULT_REQUEST_HEADERS = {
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
    'sikucreditproject.middlewares.MyUseragent': 543,
-   # 'sikucreditproject.middlewares.AbuyunProxyMiddleware': 544,
+   'sikucreditproject.middlewares.KuaidailiMiddleware': 544,
 
 }
 
@@ -107,3 +107,8 @@ MONGOTABLE='sikucredit'
 PROXYUSER="H7895G9300YN511D"
 PROXYPASS="AC67F9AA92D6F49F"
 PROXYSERVER="http://http-dyn.abuyun.com:9020"
+#快代理配置
+KUAI_USERNAME="zhao_tai_yu"
+KUAI_PASSWORD="7av2i9t5"
+DOWNLOAD_TIMEOUT=50
+RETRY_HTTP_CODES = [500, 502, 503, 504, 400, 403, 408, 429, 407]

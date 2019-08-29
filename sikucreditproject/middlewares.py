@@ -9,11 +9,12 @@ from scrapy import signals
 import random,datetime,pymongo
 from scrapy.conf import settings
 import base64
+from .utils import fetch_one_proxy
 
 mongoclient=settings.get("MONGOCLIENT")
 mongodatabase=settings.get("MONGODATABASE")
 mongotable=settings.get("MONGOTABLE")
-
+fetch_time,proxy = fetch_one_proxy()
 class MyUseragent():
     def process_request(self,request,spider):
         USER_AGENT_LIST = [
@@ -40,20 +41,25 @@ class MyUseragent():
                   'time': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
         mycol.insert_one(mydict)
         myclient.close()
-class AbuyunProxyMiddleware():
-    def __init__(self,proxyuser,proxypass,proxyserver):
-        self.proxyuser = proxyuser
-        self.proxypass = proxypass
-        self.proxyserver = proxyserver
-        self.proxyauth = "Basic " + base64.urlsafe_b64encode(bytes((self.proxyuser + ":" + self.proxypass), "ascii")).decode("utf8")
-    def process_request(self,request,spider):
-        request.meta["proxy"] = self.proxyserver
-        request.headers["Proxy-Authorization"] = self.proxyauth
-        print("正在使用代理："+str(self.proxyserver))
+class KuaidailiMiddleware():
+    def __init__(self,username,password):
+        self.username=username
+        self.password=password
+    def process_request(self, request, spider):
+        proxy_url = 'http://%s:%s@%s' % (self.username, self.password, proxy)
+        request.meta['proxy'] = proxy_url 
+        auth = "Basic %s" % (base64.b64encode(('%s:%s' % (self.username, self.password)).encode('utf-8'))).decode('utf-8')
+        request.headers['Proxy-Authorization'] = auth
+    def process_response(self,request,response,spider):
+        global fetch_time,proxy
+        if response.status!=200:
+            now_time = time.time() - 20
+            if now_time>fetch_time:
+                fetch_time,proxy = fetch_one_proxy()
+        return response
     @classmethod
     def from_crawler(cls,crawler):
         return cls(
-            proxyuser=crawler.settings.get("PROXYUSER"),
-            proxypass=crawler.settings.get("PROXYPASS"),
-            proxyserver=crawler.settings.get("PROXYSERVER"),
-        )
+            username=crawler.settings.get("KUAI_USERNAME"),
+            password=crawler.settings.get("KUAI_PASSWORD")
+            )
