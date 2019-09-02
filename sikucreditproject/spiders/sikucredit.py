@@ -94,7 +94,7 @@ class SikucreditSpider(scrapy.Spider):
 				credit["record_name"] = str(tr.xpath("./td[3]/text()[2]").extract_first()).strip()
 				# 文号
 				credit["refer_num"] = str(tr.xpath("./td[3]/text()[2]").extract_first()).strip()
-				r = re.findall(".*（(.*?号)）",str)
+				r = re.findall(".*（(.*?号)）",credit["refer_num"])
 				if r:
 					credit["refer_num"] = r[0]
 				else:
