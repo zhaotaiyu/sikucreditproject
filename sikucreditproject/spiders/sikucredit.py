@@ -53,6 +53,8 @@ class SikucreditSpider(scrapy.Spider):
 				credit["record_num"] = record_num
 				#诚信记录主体
 				credit["record_main"] = str(tr.xpath("./td[2]/a/text()").extract_first()).strip()
+				if credit["record_main"] is None:
+					credit["record_main"] = str(tr.xpath("./td[2]/text()").extract_first()).strip()
 				#诚信主体id
 				credit["main_id"] = str(tr.xpath("./td[2]/a/@href").extract_first()).strip().split("/")[-1]
 				#决定内容
@@ -87,6 +89,8 @@ class SikucreditSpider(scrapy.Spider):
 				credit["record_num"] = record_num
 				# 黑名单记录主体
 				credit["record_main"] = str(tr.xpath("./td[2]/a/text()").extract_first()).strip()
+				if credit["record_main"] is None:
+					credit["record_main"] = str(tr.xpath("./td[2]/text()").extract_first()).strip()
 				# 黑名单记录主体id
 				credit["main_id"] = str(tr.xpath("./td[2]/a/@href").extract_first()).strip().split("/")[-1]
 				# 黑名单认定依据
@@ -125,6 +129,8 @@ class SikucreditSpider(scrapy.Spider):
 				credit["record_num"] = record_num
 				# 失信联合惩戒记录主体
 				credit["record_main"] = str(tr.xpath("./td[2]/a/text()").extract_first()).strip()
+				if credit["record_main"] is None:
+					credit["record_main"] = str(tr.xpath("./td[2]/text()").extract_first()).strip()
 				# 失信联合惩戒记录主体id
 				credit["main_id"] = str(tr.xpath("./td[2]/a/@href").extract_first()).strip().split("/")[-1]
 				# 法人姓名
