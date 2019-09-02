@@ -90,10 +90,10 @@ class SikucreditSpider(scrapy.Spider):
 				# 黑名单记录主体id
 				credit["main_id"] = str(tr.xpath("./td[2]/a/@href").extract_first()).strip().split("/")[-1]
 				# 黑名单认定依据
-				credit["content"] = str(tr.xpath("./td[3]/text()[2]").extract_first()).strip()
-				credit["record_name"] = str(tr.xpath("./td[3]/text()[2]").extract_first()).strip()
+				credit["content"] = str(tr.xpath("./td[3]/text()[2]").extract_first()).replace("\n","").strip()
+				credit["record_name"] = str(tr.xpath("./td[3]/text()[2]").extract_first()).replace("\n","").strip()
 				# 文号
-				credit["refer_num"] = str(tr.xpath("./td[3]/text()[2]").extract_first()).strip()
+				credit["refer_num"] = str(tr.xpath("./td[3]/text()[2]").extract_first()).replace("\n","").strip()
 				r = re.findall(".*（(\D+.*号)）",credit["refer_num"])
 				if r:
 					credit["refer_num"] = r[0]
