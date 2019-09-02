@@ -3,6 +3,7 @@ import scrapy,datetime
 from sikucreditproject.assist import getnum
 from scrapy import FormRequest,Request
 from sikucreditproject.items import *
+import re
 
 class SikucreditSpider(scrapy.Spider):
 	name = 'sikucredit'
@@ -89,10 +90,15 @@ class SikucreditSpider(scrapy.Spider):
 				# 黑名单记录主体id
 				credit["main_id"] = str(tr.xpath("./td[2]/a/@href").extract_first()).strip().split("/")[-1]
 				# 黑名单认定依据
-				credit["content"] = str(tr.xpath("./td[3]/text()[2]").extract_first()).strip().split("（")[0]
-				credit["record_name"] = str(tr.xpath("./td[3]/text()[2]").extract_first()).strip().split("（")[0]
+				credit["content"] = str(tr.xpath("./td[3]/text()[2]").extract_first()).strip()
+				credit["record_name"] = str(tr.xpath("./td[3]/text()[2]").extract_first()).strip()
 				# 文号
-				credit["refer_num"] = '（' .join(str(tr.xpath("./td[3]/text()[2]").extract_first()).strip().split("（")[1:])
+				credit["refer_num"] = str(tr.xpath("./td[3]/text()[2]").extract_first()).strip()
+				r = re.findall(".*（(.*?号)）",str)
+				if r:
+					credit["refer_num"] = r[0]
+				else:
+					credit["refer_num"] = None
 				# 认定部门
 				credit["department"] = str(tr.xpath("./td[4]/text()").extract_first()).strip()
 				# 列入黑名单日期	
