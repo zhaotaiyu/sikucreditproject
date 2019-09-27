@@ -56,8 +56,7 @@ DEFAULT_REQUEST_HEADERS = {
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
    'sikucreditproject.middlewares.MyUseragent': 543,
-   'sikucreditproject.middlewares.KuaidailiMiddleware': 544,
-
+   # 'sikucreditproject.middlewares.KuaidailiMiddleware': 544,
 }
 
 # Enable or disable extensions
@@ -70,7 +69,8 @@ DOWNLOADER_MIDDLEWARES = {
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'sikucreditproject.pipelines.SikucreditprojectPipeline': 300,
-   'sikucreditproject.pipelines.PgsqlPipeline': 301,
+   #'sikucreditproject.pipelines.PgsqlPipeline': 301,
+   'sikucreditproject.pipelines.ScrapyKafkaPipeline': 302,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -112,3 +112,6 @@ KUAI_USERNAME="zhao_tai_yu"
 KUAI_PASSWORD="7av2i9t5"
 DOWNLOAD_TIMEOUT=50
 RETRY_HTTP_CODES = [500, 502, 503, 504, 400, 403, 408, 429, 407]
+#KAFKA配置
+BOOTSTRAP_SERVER="49.4.90.247:6667"
+TOPIC="TOPIC_sikuyifinally"

@@ -4,18 +4,20 @@
 #
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
+import time
 
 from scrapy import signals
 import random,datetime,pymongo
-from scrapy.conf import settings
+from .settings import *
 import base64
 from .utils import fetch_one_proxy
 
-mongoclient=settings.get("MONGOCLIENT")
-mongodatabase=settings.get("MONGODATABASE")
-mongotable=settings.get("MONGOTABLE")
-fetch_time,proxy = fetch_one_proxy()
-class MyUseragent():
+mongoclient=MONGOCLIENT
+mongodatabase=MONGODATABASE
+mongotable=MONGOTABLE
+if "sikucreditproject.middlewares.KuaidailiMiddleware" in DOWNLOADER_MIDDLEWARES:
+    fetch_time,proxy = fetch_one_proxy()
+class MyUseragent(object):
     def process_request(self,request,spider):
         USER_AGENT_LIST = [
         'MSIE (MSIE 6.0; X11; Linux; i686) Opera 7.23',
@@ -41,7 +43,7 @@ class MyUseragent():
                   'time': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
         mycol.insert_one(mydict)
         myclient.close()
-class KuaidailiMiddleware():
+class KuaidailiMiddleware(object):
     def __init__(self,username,password):
         self.username=username
         self.password=password

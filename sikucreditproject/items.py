@@ -2,6 +2,7 @@
 import scrapy
 
 class SikucreditprojectItem(scrapy.Item):
+	collection = "behavioritem"
 	main_id = scrapy.Field()
 	record_main = scrapy.Field()
 	main_type = scrapy.Field()

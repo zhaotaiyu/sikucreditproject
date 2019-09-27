@@ -5,13 +5,16 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import psycopg2
+import json
+from pykafka import KafkaClient
+from .settings import *
+from pykafka.exceptions import SocketDisconnectedError, LeaderNotAvailable
 import datetime
 import pymongo
-from scrapy.conf import settings
 
-mongoclient=settings.get("MONGOCLIENT")
-mongodatabase=settings.get("MONGODATABASE")
-mongotable=settings.get("MONGOTABLE")
+mongoclient=MONGOCLIENT
+mongodatabase=MONGODATABASE
+mongotable=MONGOTABLE
 
 class SikucreditprojectPipeline(object):
     def process_item(self, item, spider):
@@ -74,3 +77,33 @@ class PgsqlPipeline(object):
                 mycol.insert_one(mydict)
                 myclient.close()
         return item
+class ScrapyKafkaPipeline(object):
+    def __init__(self):
+        kafka_ip_port = BOOTSTRAP_SERVER
+        # 初始化client
+        self._client = KafkaClient(hosts=kafka_ip_port)
+        # 初始化Producer 需要把topic name变成字节的形式
+        self._producer = self._client.topics[TOPIC.encode(encoding="UTF-8")].get_producer()
+    def process_item(self, item, spider):
+        msg={
+            "collection":item.collection,
+            "content":dict(item)
+        }
+        try:
+            self._producer.produce(json.dumps((msg),ensure_ascii=False).encode(encoding="UTF-8"))
+        except (SocketDisconnectedError, LeaderNotAvailable) as e:
+            try:
+                self._producer = self._client.topics[TOPIC.encode(encoding="UTF-8")].get_producer()
+                self._producer.stop()
+                self._producer.start()
+                self._producer.produce(json.dumps((msg),ensure_ascii=False).encode(encoding="UTF-8"))
+            except Exception as e:
+                myclient = pymongo.MongoClient('mongodb://ecs-a025-0002:27017/')
+                mydb=myclient[mongodatabase]
+                mycol=mydb[mongotable]
+                mydict = {"item":msg,"reason":"写入kafka失败",'time':datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+                mycol.insert_one(mydict)
+                myclient.close()
+        return item
+    def close_spider(self, spider):
+        self._producer.stop()

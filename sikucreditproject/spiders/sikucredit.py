@@ -47,7 +47,7 @@ class SikucreditSpider(scrapy.Spider):
 		tr_list = response.xpath("//table[@class='table_box credit_table']/tbody/tr")
 		for tr in tr_list:
 			record_num = str(tr.xpath("./td[1]/span/text()").extract_first()).strip()
-			if record_num not in self.num:
+			if record_num not in self.num and record_num:
 				credit = SikucreditprojectItem()
 				#诚信记录编号
 				credit["record_num"] = record_num
@@ -83,7 +83,7 @@ class SikucreditSpider(scrapy.Spider):
 		tr_list = response.xpath("//table[@class='table_box credit_table']/tbody/tr")
 		for tr in tr_list:
 			record_num = str(tr.xpath("./td[1]/text()").extract_first()).strip()
-			if record_num not in self.num:
+			if record_num not in self.num and record_num:
 				credit = SikucreditprojectItem()
 				# 黑名单记录编号
 				credit["record_num"] = record_num
@@ -123,7 +123,7 @@ class SikucreditSpider(scrapy.Spider):
 		tr_list = response.xpath("//table[@class='table_box credit_table']/tbody/tr")
 		for tr in tr_list:
 			record_num = str(tr.xpath("./td[1]/span/text()").extract_first()).strip()
-			if record_num not in self.num:
+			if record_num not in self.num and record_num:
 				credit = SikucreditprojectItem()
 				# 失信记录编号
 				credit["record_num"] = record_num
