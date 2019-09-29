@@ -56,7 +56,7 @@ DEFAULT_REQUEST_HEADERS = {
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
    'sikucreditproject.middlewares.MyUseragent': 543,
-   'sikucreditproject.middlewares.KuaidailiMiddleware': 544,
+   # 'sikucreditproject.middlewares.KuaidailiMiddleware': 544,
 }
 
 # Enable or disable extensions
@@ -69,7 +69,7 @@ DOWNLOADER_MIDDLEWARES = {
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'sikucreditproject.pipelines.SikucreditprojectPipeline': 300,
-   #'sikucreditproject.pipelines.PgsqlPipeline': 301,
+   # 'sikucreditproject.pipelines.PgsqlPipeline': 301,
    'sikucreditproject.pipelines.ScrapyKafkaPipeline': 302,
 }
 
