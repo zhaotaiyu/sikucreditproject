@@ -28,7 +28,7 @@ class SikucreditprojectPipeline(object):
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36"
         }
         while 1:
-            req = requests.get(test_url, headers=headers, allow_redirects=False)
+            req = requests.get(test_url, headers=headers, allow_redirects=False,timeout=20)
             loc_url = req.headers.get("Location")
             if loc_url:
                 if "http" not in loc_url:
