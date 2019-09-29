@@ -46,11 +46,11 @@ class SikucreditSpider(scrapy.Spider):
 	def parse_chengxin(self, response):
 		tr_list = response.xpath("//table[@class='table_box credit_table']/tbody/tr")
 		for tr in tr_list:
-			record_num = str(tr.xpath("./td[1]/span/text()").extract_first()).strip()
+			record_num = tr.xpath("./td[1]/span/text()").extract_first()
 			if record_num not in self.num and record_num:
 				credit = SikucreditprojectItem()
 				#诚信记录编号
-				credit["record_num"] = record_num
+				credit["record_num"] = record_num.strip()
 				#诚信记录主体
 				credit["record_main"] = str(tr.xpath("./td[2]/a/text()").extract_first()).strip()
 				if credit["record_main"] =="None":
@@ -82,11 +82,11 @@ class SikucreditSpider(scrapy.Spider):
 	def parse_black(self,response):
 		tr_list = response.xpath("//table[@class='table_box credit_table']/tbody/tr")
 		for tr in tr_list:
-			record_num = str(tr.xpath("./td[1]/text()").extract_first()).strip()
+			record_num = tr.xpath("./td[1]/text()").extract_first()
 			if record_num not in self.num and record_num:
 				credit = SikucreditprojectItem()
 				# 黑名单记录编号
-				credit["record_num"] = record_num
+				credit["record_num"] = record_num.strip()
 				# 黑名单记录主体
 				credit["record_main"] = str(tr.xpath("./td[2]/a/text()").extract_first()).strip()
 				if credit["record_main"]  =="None":
@@ -122,11 +122,11 @@ class SikucreditSpider(scrapy.Spider):
 	def parse_punish(self,response):
 		tr_list = response.xpath("//table[@class='table_box credit_table']/tbody/tr")
 		for tr in tr_list:
-			record_num = str(tr.xpath("./td[1]/span/text()").extract_first()).strip()
+			record_num = tr.xpath("./td[1]/span/text()").extract_first()
 			if record_num not in self.num and record_num:
 				credit = SikucreditprojectItem()
 				# 失信记录编号
-				credit["record_num"] = record_num
+				credit["record_num"] = record_num.strip()
 				# 失信联合惩戒记录主体
 				credit["record_main"] = str(tr.xpath("./td[2]/a/text()").extract_first()).strip()
 				if credit["record_main"]  =="None":
