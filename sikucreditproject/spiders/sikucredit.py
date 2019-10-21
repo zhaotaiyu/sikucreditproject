@@ -7,12 +7,12 @@ import re
 
 class SikucreditSpider(scrapy.Spider):
 	name = 'sikucredit'
-	allowed_domains = ['jzsc.mohurd.gov.cn']
-	start_urls = ['http://jzsc.mohurd.gov.cn/']
+	allowed_domains = ['jzsc2016.mohurd.gov.cn']
+	start_urls = ['http://jzsc2016.mohurd.gov.cn/']
 
 	def start_requests(self):
 		self.num = getnum()
-		chengxin_url = 'http://jzsc.mohurd.gov.cn/asite/credit/record/query'
+		chengxin_url = 'http://jzsc2016.mohurd.gov.cn/asite/credit/record/query'
 		for page in range (1,15):
 			chengxin_formdata = {
 				'$reload': '0',
@@ -20,7 +20,7 @@ class SikucreditSpider(scrapy.Spider):
 				'$pgsz': '10'
 			}
 			yield FormRequest(chengxin_url,formdata=chengxin_formdata,callback=self.parse_chengxin)
-		black_url = 'http://jzsc.mohurd.gov.cn/asite/credit/record/blackList'
+		black_url = 'http://jzsc2016.mohurd.gov.cn/asite/credit/record/blackList'
 		for page in range (1,14):
 			black_formdata = {
 				'$reload': '0',
@@ -28,7 +28,7 @@ class SikucreditSpider(scrapy.Spider):
 				'$pgsz': '10'
 			}
 			yield FormRequest(black_url,formdata=black_formdata,callback=self.parse_black)
-		punish_url = 'http://jzsc.mohurd.gov.cn/asite/credit/record/punishList'
+		punish_url = 'http://jzsc2016.mohurd.gov.cn/asite/credit/record/punishList'
 		for page in range (1,6):
 			punish_formdata = {
 				'$reload': '0',

@@ -34,15 +34,6 @@ class MyUseragent(object):
             ]
         agent = random.choice(USER_AGENT_LIST)
         request.headers['User_Agent'] =agent
-    def process_exception(self,request,exception,spider):
-        myclient = pymongo.MongoClient('mongodb://ecs-a025-0002:27017/')
-        mydb = myclient[mongodatabase]
-        mycol = mydb[mongotable]
-        mydict = {"exception": "error",
-                  "url": request.url,
-                  'time': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-        mycol.insert_one(mydict)
-        myclient.close()
 class KuaidailiMiddleware(object):
     def __init__(self,username,password):
         self.username=username

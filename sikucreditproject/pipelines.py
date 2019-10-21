@@ -5,10 +5,8 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import logging
-
 import psycopg2
 import json
-
 import requests
 from pykafka import KafkaClient
 from .settings import *
@@ -22,7 +20,7 @@ mongotable=MONGOTABLE
 
 class SikucreditprojectPipeline(object):
     def open_spider(self,spider):
-        test_url = "http://jzsc.mohurd.gov.cn/"
+        test_url = "http://jzsc2016.mohurd.gov.cn/"
         headers = {
             "Accept-Encoding": "Gzip",
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36"
@@ -32,7 +30,7 @@ class SikucreditprojectPipeline(object):
             loc_url = req.headers.get("Location")
             if loc_url:
                 if "http" not in loc_url:
-                    loc_url = 'http://jzsc.mohurd.gov.cn' + loc_url
+                    loc_url = 'http://jzsc2016.mohurd.gov.cn' + loc_url
                     safe = requests.get(loc_url, headers=headers, allow_redirects=False)
                 logging.debug("认证成功")
                 break
@@ -66,7 +64,7 @@ class PgsqlPipeline(object):
         self.db.close()
     def process_item(self,item,spider):
         ite=dict(item)
-        sql="INSERT INTO behavior_item ("
+        sql="INSERT INTO sikuyicredit.behavioritem ("
         v_list=[]
         k_list=[]
         for key,value in ite.items():

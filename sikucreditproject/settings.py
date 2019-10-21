@@ -69,7 +69,7 @@ DOWNLOADER_MIDDLEWARES = {
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'sikucreditproject.pipelines.SikucreditprojectPipeline': 300,
-   # 'sikucreditproject.pipelines.PgsqlPipeline': 301,
+   'sikucreditproject.pipelines.PgsqlPipeline': 301,
    'sikucreditproject.pipelines.ScrapyKafkaPipeline': 302,
 }
 
@@ -95,7 +95,7 @@ ITEM_PIPELINES = {
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 #PGSQL
 PGSQL_URI="ecs-a025-0002"
-PGSQL_DATABASE="sikuyitest"
+PGSQL_DATABASE="cic_database"
 PGSQL_PASS="sikuyi"
 PGSQL_USER="postgres"
 PGSQL_PORT=54321

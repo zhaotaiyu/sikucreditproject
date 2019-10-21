@@ -4,7 +4,7 @@ def getnum():
     num = []
     db=psycopg2.connect(database="cic_database", user="postgres", password="sikuyi", host="ecs-a025-0002", port=54321)
     cursor=db.cursor()
-    sql="SELECT record_num FROM sikuyi.behavioritem"
+    sql="SELECT record_num FROM sikuyicredit.behavioritem"
     try:
         cursor.execute(sql)
         reslist = cursor.fetchall()

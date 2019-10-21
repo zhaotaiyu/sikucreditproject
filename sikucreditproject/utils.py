@@ -9,7 +9,7 @@ password=KUAI_PASSWORD
 orderid = '966404044351881'  # 订单号
 # 提取代理链接，以私密代理为例
 api_url = "http://dps.kdlapi.com/api/getdps/?orderid={}&num=1&pt=1&format=json&sep=1"
-test_url="http://jzsc.mohurd.gov.cn/"
+test_url="http://jzsc2016.mohurd.gov.cn/"
 headers = {
 	"Accept-Encoding": "Gzip",
 	"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36"
@@ -36,7 +36,7 @@ def fetch_one_proxy():
 			loc_url = req.headers.get("Location")
 			if loc_url:
 				if "http" not in loc_url:
-					loc_url = 'http://jzsc.mohurd.gov.cn' + loc_url
+					loc_url = 'http://jzsc2016.mohurd.gov.cn' + loc_url
 					safe = requests.get(loc_url,headers=headers,proxies=proxies,allow_redirects=False)
 				fetch_time = time.time()
 				return fetch_time,proxy
